@@ -1,0 +1,275 @@
+{
+  "version": 2,
+  "cli": { "defaultCollection": "@nrwl/nest" },
+  "defaultProject": "catstagram-api",
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "@emotion/styled",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": { "style": "@emotion/styled" },
+      "library": { "style": "@emotion/styled", "linter": "eslint" }
+    }
+  },
+  "projects": {
+    "catstagram-api": {
+      "root": "apps/catstagram-api",
+      "sourceRoot": "apps/catstagram-api/src",
+      "projectType": "application",
+      "prefix": "catstagram-api",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/catstagram-api",
+            "main": "apps/catstagram-api/src/main.ts",
+            "tsConfig": "apps/catstagram-api/tsconfig.app.json",
+            "assets": ["apps/catstagram-api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/catstagram-api/src/environments/environment.ts",
+                  "with": "apps/catstagram-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": { "buildTarget": "catstagram-api:build" }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["apps/catstagram-api/**/*.ts"] }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/catstagram-api"],
+          "options": {
+            "jestConfig": "apps/catstagram-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "catstagram-ui": {
+      "root": "apps/catstagram-ui",
+      "sourceRoot": "apps/catstagram-ui/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/catstagram-ui",
+            "index": "apps/catstagram-ui/src/index.html",
+            "main": "apps/catstagram-ui/src/main.tsx",
+            "polyfills": "apps/catstagram-ui/src/polyfills.ts",
+            "tsConfig": "apps/catstagram-ui/tsconfig.app.json",
+            "assets": ["apps/catstagram-ui/src/assets"],
+            "styles": [],
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/catstagram-ui/src/environments/environment.ts",
+                  "with": "apps/catstagram-ui/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": { "buildTarget": "catstagram-ui:build" },
+          "configurations": {
+            "production": { "buildTarget": "catstagram-ui:build:production" }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/catstagram-ui/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/catstagram-ui"],
+          "options": {
+            "jestConfig": "apps/catstagram-ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "catstagram-ui-e2e": {
+      "root": "apps/catstagram-ui-e2e",
+      "sourceRoot": "apps/catstagram-ui-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2eWithDeps": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "yarn start"
+              },
+              {
+                "command": "nx run catstagram-ui-e2e:e2e"
+              }
+            ],
+            "parallel": true
+          }
+        },
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/catstagram-ui-e2e/cypress.json",
+            "tsConfig": "apps/catstagram-ui-e2e/tsconfig.e2e.json",
+            "devServerTarget": "catstagram-ui:serve",
+            "skipServe": true,
+            "baseUrl": "http://localhost:4200"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "catstagram-ui:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/catstagram-ui-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "ui-components": {
+      "root": "libs/ui-components",
+      "sourceRoot": "libs/ui-components/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/ui-components/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui-components"],
+          "options": {
+            "jestConfig": "libs/ui-components/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "storybook": {
+          "executor": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/react",
+            "port": 4400,
+            "config": { "configFolder": "libs/ui-components/.storybook" }
+          },
+          "configurations": { "ci": { "quiet": true } }
+        },
+        "build-storybook": {
+          "executor": "@nrwl/storybook:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "uiFramework": "@storybook/react",
+            "outputPath": "dist/storybook/ui-components",
+            "config": { "configFolder": "libs/ui-components/.storybook" }
+          },
+          "configurations": { "ci": { "quiet": true } }
+        }
+      }
+    },
+    "data-access": {
+      "root": "libs/data-access",
+      "sourceRoot": "libs/data-access/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["libs/data-access/**/*.ts"] }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/data-access"],
+          "options": {
+            "jestConfig": "libs/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "filters": {
+      "root": "libs/filters",
+      "sourceRoot": "libs/filters/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/filters/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/filters"],
+          "options": {
+            "jestConfig": "libs/filters/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "uploader": {
+      "root": "libs/uploader",
+      "sourceRoot": "libs/uploader/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/uploader/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/uploader"],
+          "options": {
+            "jestConfig": "libs/uploader/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  }
+}

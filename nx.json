@@ -1,0 +1,38 @@
+{
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    ".eslintrc.json": "*",
+    "nx.json": "*"
+  },
+  "affected": { "defaultBase": "master" },
+  "npmScope": "catstagram",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e",
+          "build-storybook"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "catstagram-api": { "tags": [] },
+    "catstagram-ui": { "tags": [] },
+    "catstagram-ui-e2e": {
+      "tags": [],
+      "implicitDependencies": ["catstagram-ui"]
+    },
+    "ui-components": { "tags": [] },
+    "data-access": { "tags": [] },
+    "filters": { "tags": [] },
+    "uploader": { "tags": [] }
+  }
+}
